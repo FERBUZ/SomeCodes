@@ -5,6 +5,7 @@ import { PeliculasService } from '../../services/peliculas.service';
 import { Movie } from '../../interfaces/cartelera-response';
 
 @Component({
+  standalone: false,
   selector: 'app-buscar',
   templateUrl: './buscar.component.html',
   styleUrls: ['./buscar.component.css']

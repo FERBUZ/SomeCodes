@@ -8,6 +8,7 @@ import { Cast } from '../../interfaces/credits-response';
 import { combineLatest } from 'rxjs';
 
 @Component({
+  standalone: false,
   selector: 'app-pelicula',
   templateUrl: './pelicula.component.html',
   styleUrls: ['./pelicula.component.css']

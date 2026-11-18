@@ -3,6 +3,7 @@ import { PeliculasService } from '../../services/peliculas.service';
 import { Movie } from '../../interfaces/cartelera-response';
 
 @Component({
+  standalone: false,
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { RatingModule } from 'ng-starrating';
 
 import { NavbarComponent } from './navbar/navbar.component';
 import { SlideshowComponent } from './slideshow/slideshow.component';
@@ -27,7 +26,6 @@ import { CastSlideshowComponent } from './cast-slideshow/cast-slideshow.componen
   imports: [
     CommonModule,
     RouterModule,
-    RatingModule,
     PipesModule
   ]
 })

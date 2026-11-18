@@ -1,40 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import Swiper from 'swiper';
-
+import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 import { Movie } from '../../interfaces/cartelera-response';
-
-@Component({
-  selector: 'app-slideshow',
-  templateUrl: './slideshow.component.html',
-  styleUrls: ['./slideshow.component.css']
-})
-export class SlideshowComponent implements OnInit, AfterViewInit {
-
-  @Input() movies: Movie[];
-  
-  public mySwiper: Swiper;
-
-  constructor() { }
-
-  ngAfterViewInit(): void {
-    this.mySwiper = new Swiper('.swiper-container', {
-      loop: true,
-    });
-  }
-
-  ngOnInit(): void {
-
-    // console.log(this.movies);
-
-  }
-
-  onSlideNext(){
-    this.mySwiper.slideNext();
-  }
-
-  onSlidePrev(){
-    this.mySwiper.slidePrev();
-  }
-
-
-}
+@Component({selector:'app-slideshow',standalone:false,templateUrl:'./slideshow.component.html',styleUrls:['./slideshow.component.css']})
+export class SlideshowComponent { @Input() movies: Movie[]=[]; @ViewChild('track') track: ElementRef<HTMLElement>; move(direction:number){const el=this.track.nativeElement; el.scrollBy({left:direction*el.clientWidth,behavior:'smooth'});} }
