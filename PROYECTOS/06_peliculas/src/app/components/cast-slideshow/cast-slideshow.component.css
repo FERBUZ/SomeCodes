@@ -1,6 +1,1 @@
-.poster {
-    border-radius: 10px;
-    box-shadow: 0px 0px 20px rgba(177, 15, 15, 0.5);
-    margin: 5px;
-    cursor: pointer;
-}
+.cast-track{display:flex;gap:1rem;overflow:auto}.cast-track article{flex:0 0 120px}.cast-track img{width:120px;aspect-ratio:2/3;object-fit:cover}

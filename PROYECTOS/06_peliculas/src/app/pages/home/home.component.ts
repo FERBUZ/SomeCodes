@@ -1,51 +1,14 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { PeliculasService } from '../../services/peliculas.service';
-import { Movie } from '../../interfaces/cartelera-response';
-
-@Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
-})
-export class HomeComponent implements OnInit, OnDestroy {
-
-  public movies: Movie[] = []
-  public moviesSlideshow: Movie[] = []
-
-  @HostListener('window:scroll', ['$event'])
-  onScroll() {
-
-    const pos = (document.documentElement.scrollTop || document.body.scrollTop ) + 1300;
-    const max = ( document.documentElement.scrollHeight || document.body.scrollHeight );
-    
-    if ( pos > max ) {
-      // TODO: llamar el servicio
-      if ( this.peliculasService.cargando ) { return; }
-
-      this.peliculasService.getCartelera().subscribe( movies => {
-        this.movies.push(...movies );
-      });
-    }
-    
-    
-  }
-
-
-  constructor( private peliculasService: PeliculasService ) { }
-
-  ngOnInit(): void {
-
-    this.peliculasService.getCartelera()
-      .subscribe( movies => {
-        // console.log(resp.results);
-        this.movies = movies;
-        this.moviesSlideshow = movies;
-      })
-
-  }
-
-  ngOnDestroy() {
-    this.peliculasService.resetCarteleraPage();
-  }
-
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
+import {Subject,takeUntil} from 'rxjs';
+import {PeliculasService} from '../../services/peliculas.service';
+import {Movie} from '../../interfaces/cartelera-response';
+@Component({selector:'app-home',standalone:false,templateUrl:'./home.component.html',styleUrls:['./home.component.css']})
+export class HomeComponent implements OnInit,OnDestroy {
+ movies:Movie[]=[]; moviesSlideshow:Movie[]=[]; error=false; loading=false; exhausted=false;
+ private destroyed=new Subject<void>();
+ constructor(private service:PeliculasService){}
+ ngOnInit(){this.service.resetCarteleraPage();this.load();}
+ @HostListener('window:scroll') onScroll(){if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-400&&!this.error)this.load();}
+ load(){if(this.loading||this.exhausted)return;this.loading=true;this.error=false;this.service.getCartelera().pipe(takeUntil(this.destroyed)).subscribe({next:movies=>{if(!this.movies.length)this.moviesSlideshow=movies;const ids=new Set(this.movies.map(m=>m.id));this.movies=[...this.movies,...movies.filter(m=>!ids.has(m.id))];this.exhausted=movies.length===0;this.loading=false;},error:()=>{this.error=true;this.loading=false;}});}
+ ngOnDestroy(){this.destroyed.next();this.destroyed.complete();this.service.resetCarteleraPage();}
 }

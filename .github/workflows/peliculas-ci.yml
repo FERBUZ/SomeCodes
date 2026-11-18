@@ -1,0 +1,32 @@
+name: Peliculas CI
+on:
+  push:
+    paths: ['PROYECTOS/06_peliculas/**', '.github/workflows/peliculas-ci.yml']
+  pull_request:
+    paths: ['PROYECTOS/06_peliculas/**', '.github/workflows/peliculas-ci.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: PROYECTOS/06_peliculas
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - run: npm install
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: peliculas-validation
+          path: |
+            PROYECTOS/06_peliculas/playwright-report
+            PROYECTOS/06_peliculas/test-results
+            PROYECTOS/06_peliculas/package-lock.json

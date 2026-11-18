@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, finalize, map, tap } from 'rxjs/operators';
 
 import { CarteleraResponse, Movie } from '../interfaces/cartelera-response';
 import { MovieResponse } from '../interfaces/movie-response';
@@ -21,8 +21,9 @@ export class PeliculasService {
 
   get params() {
     return {
+
       api_key: '14bcdd477f346b4c3a7a35e032f28a78',
-      language: 'es-ES',
+      language: 'es-MX',
       page: this.carteleraPage.toString()
     }
   }
@@ -43,13 +44,13 @@ export class PeliculasService {
 
     this.cargando = true;
     return this.http.get<CarteleraResponse>(`${ this.baseUrl }/movie/now_playing`,{
-      params: this.params
+      params: {...this.params, region: 'MX'}
     }).pipe(
       map( (resp) => resp.results ),
       tap( () => {
         this.carteleraPage += 1;
-        this.cargando = false;
-      })
+      }),
+      finalize(() => { this.cargando = false; })
     );
 
 

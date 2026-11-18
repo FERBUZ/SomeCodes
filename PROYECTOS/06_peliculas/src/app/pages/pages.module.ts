@@ -7,7 +7,6 @@ import { BuscarComponent } from './buscar/buscar.component';
 
 import { ComponentsModule } from '../components/components.module';
 import { PipesModule } from '../pipes/pipes.module';
-import { RatingModule } from 'ng-starrating';
 
 
 @NgModule({
@@ -19,8 +18,7 @@ import { RatingModule } from 'ng-starrating';
   imports: [
     CommonModule,
     ComponentsModule,
-    PipesModule,
-    RatingModule
+    PipesModule
   ]
 })
 export class PagesModule { }
