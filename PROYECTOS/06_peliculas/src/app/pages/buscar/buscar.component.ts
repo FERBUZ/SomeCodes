@@ -1,34 +1,3 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { PeliculasService } from '../../services/peliculas.service';
-
-import { Movie } from '../../interfaces/cartelera-response';
-
-@Component({
-  standalone: false,
-  selector: 'app-buscar',
-  templateUrl: './buscar.component.html',
-  styleUrls: ['./buscar.component.css']
-})
-export class BuscarComponent implements OnInit {
-
-  public texto: string = '';
-  public movies: Movie[] = [];
-
-  constructor(  private activatedRoute: ActivatedRoute,
-                private peliculasService: PeliculasService) { }
-
-  ngOnInit(): void {
-
-    this.activatedRoute.params.subscribe( params => {
-      
-      this.texto = params.texto;
-
-      this.peliculasService.buscarPeliculas( params.texto ).subscribe( movies => {
-        this.movies = movies;
-      })
-    })
-
-  }
-
-}
+import {Component,OnInit,OnDestroy} from '@angular/core';import {ActivatedRoute} from '@angular/router';import {Subject,of,switchMap,catchError,takeUntil} from 'rxjs';import {PeliculasService} from '../../services/peliculas.service';import {Movie} from '../../interfaces/cartelera-response';
+@Component({selector:'app-buscar',standalone:false,templateUrl:'./buscar.component.html',styleUrls:['./buscar.component.css']})
+export class BuscarComponent implements OnInit,OnDestroy {texto='';movies:Movie[]=[];loading=false;error=false;private destroyed=new Subject<void>();constructor(private route:ActivatedRoute,private service:PeliculasService){}ngOnInit(){this.route.params.pipe(switchMap(params=>{this.texto=String(params['texto']||'').trim();this.loading=true;this.error=false;return (this.texto?this.service.buscarPeliculas(this.texto):of([])).pipe(catchError(()=>{this.error=true;return of([]);}));}),takeUntil(this.destroyed)).subscribe(movies=>{this.movies=movies;this.loading=false;});}ngOnDestroy(){this.destroyed.next();this.destroyed.complete();}}

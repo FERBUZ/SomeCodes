@@ -1,12 +1,1 @@
-<h1>Cartelera</h1>
-
-<div class="row dark" *ngIf="movies.length > 0">
-    <div class="col">
-        <app-slideshow [movies]="moviesSlideshow"></app-slideshow>
-    </div>
-</div>
-
-
-<h1 class="mt-5">Películas nuevas!!!</h1>
-
-<app-peliculas-poster-grid *ngIf="movies.length > 0" [movies]="movies"></app-peliculas-poster-grid>
+<h1>Cartelera</h1><app-slideshow *ngIf="moviesSlideshow.length" [movies]="moviesSlideshow"></app-slideshow><h2 class="mt-5">Películas nuevas</h2><app-peliculas-poster-grid [movies]="movies"></app-peliculas-poster-grid><p *ngIf="loading" role="status">Cargando películas…</p><div *ngIf="error" role="alert" class="text-light">No se pudieron cargar las películas. <button class="btn btn-outline-light" (click)="load()">Reintentar</button></div><button *ngIf="!loading&&!error&&!exhausted" class="btn btn-outline-light" (click)="load()">Cargar más</button>

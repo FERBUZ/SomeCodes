@@ -44,7 +44,7 @@ export class PeliculasService {
 
     this.cargando = true;
     return this.http.get<CarteleraResponse>(`${ this.baseUrl }/movie/now_playing`,{
-      params: this.params
+      params: {...this.params, region: 'MX'}
     }).pipe(
       map( (resp) => resp.results ),
       tap( () => {

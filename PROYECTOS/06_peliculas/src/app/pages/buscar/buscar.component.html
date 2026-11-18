@@ -1,10 +1,1 @@
-<h1>Buscar películas <small class="text-capitalize"> {{ texto }} </small></h1>
-<hr>
-
-<div class="row">
-    <div class="col">
-
-        <app-peliculas-poster-grid [movies]="movies"></app-peliculas-poster-grid>
-
-    </div>
-</div>
+<h1>Resultados: {{texto}}</h1><p *ngIf="loading" role="status">Buscando…</p><p *ngIf="error" role="alert">No se pudo realizar la búsqueda.</p><p *ngIf="!loading&&!error&&!movies.length">No se encontraron películas.</p><app-peliculas-poster-grid [movies]="movies"></app-peliculas-poster-grid>
