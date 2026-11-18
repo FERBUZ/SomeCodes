@@ -13,7 +13,7 @@ import { CreditsReponse, Cast } from '../interfaces/credits-response';
 })
 export class PeliculasService {
 
-  private baseUrl: string = '/api/tmdb';
+  private baseUrl: string = 'https://api.themoviedb.org/3';
   private carteleraPage = 1;
   public cargando: boolean = false;
 
@@ -22,6 +22,7 @@ export class PeliculasService {
   get params() {
     return {
 
+      api_key: '14bcdd477f346b4c3a7a35e032f28a78',
       language: 'es-MX',
       page: this.carteleraPage.toString()
     }
