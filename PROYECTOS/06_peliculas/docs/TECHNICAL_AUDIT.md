@@ -14,3 +14,6 @@ Migrate to a supported Angular workspace with compatible Node/TypeScript version
 
 ## Validation status
 Static review only. No build, dependency scan, live TMDB call or automated tests executed yet.
+
+## Architecture decision
+The project owner elected to retain the existing browser-side TMDB v3 key and direct API access for now. The proxy is removed. This key is publicly visible and may be abused or revoked; its live validity has not been verified. Prefer static hosting and mocked CI tests without new credentials.
