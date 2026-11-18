@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, finalize, map, tap } from 'rxjs/operators';
 
 import { CarteleraResponse, Movie } from '../interfaces/cartelera-response';
 import { MovieResponse } from '../interfaces/movie-response';
@@ -13,7 +13,7 @@ import { CreditsReponse, Cast } from '../interfaces/credits-response';
 })
 export class PeliculasService {
 
-  private baseUrl: string = 'https://api.themoviedb.org/3';
+  private baseUrl: string = '/api/tmdb';
   private carteleraPage = 1;
   public cargando: boolean = false;
 
@@ -21,8 +21,8 @@ export class PeliculasService {
 
   get params() {
     return {
-      api_key: '14bcdd477f346b4c3a7a35e032f28a78',
-      language: 'es-ES',
+
+      language: 'es-MX',
       page: this.carteleraPage.toString()
     }
   }
@@ -48,8 +48,8 @@ export class PeliculasService {
       map( (resp) => resp.results ),
       tap( () => {
         this.carteleraPage += 1;
-        this.cargando = false;
-      })
+      }),
+      finalize(() => { this.cargando = false; })
     );
 
 
